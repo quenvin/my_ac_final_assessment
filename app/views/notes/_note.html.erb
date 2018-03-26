@@ -3,6 +3,11 @@
     <%= note.title %> <br>
     <%= note.body %> <br>
     <%= note.user.email %> <br>
+    <% if Like.find_by(note: note, user: current_user) %>
+      <%= link_to 'Unlike', unlike_note_path(note), remote: true, method: :delete %>
+    <% else %>
+      <%= link_to 'Like', like_note_path(note), remote: true, method: :post %>
+    <% end %>
     <% if current_user == note.user %>
       <%= link_to 'Edit', edit_note_path(note) %>
       <%= link_to 'Delete', note_path(note), method: :delete, data: {confirm:"Are you sure?"} %>

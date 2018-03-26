@@ -1,6 +1,6 @@
 class LikesController < ApplicationController
   def create
-    Like.create(post_id: params[:id], user: current_user)
+    Like.create(note_id: params[:id], user: current_user)
     @notes = Note.all.order("created_at DESC")
     render :toggle
   end
@@ -8,7 +8,7 @@ class LikesController < ApplicationController
 
 
   def destroy
-    like = Like.find_by(post_id:params[:id])
+    like = Like.find_by(note_id:params[:id])
     like.destroy
     @notes = Note.all.order("created_at DESC")
     render :toggle
