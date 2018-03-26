@@ -34,19 +34,29 @@
 <% end %>
 
 <% if current_user %>
+  <h3>My Follow List</h3>
   <% if @follows == nil || @follows.size == 0 %>
-    <h3>List Of User/s I Followed</h3>
     <div>No User You Are Following</div>
   <% else %>
     <% @follows.each do |follow| %>
       <div>
-        <%= follow.following.username %> <br>
+        <%= follow.following.username %>
         <%= link_to 'Unfollow', unfollow_user_path(follow.following.id), remote: true, method: :delete %>
-        <br><hr><br>
+        <br><hr>
     <% end %>
   <% end %>
-<% else %>
+  <h3>Users To Follow</h3>
   <% @users.each do |user| %>
-    <%= user.username %>
+    <% if Follow.find_by(following_id: user, follower_id: current_user) %>
+    <% else %>
+      <%= user.username %>
+      <%= link_to 'Follow', follow_user_path(user), remote: true, method: :post %>
+      <br>
+    <% end%>
+  <% end %>
+<% else %>
+  <h3>Users List</h3>
+  <% @users.each do |user| %>
+    <%= user.username %> <br>
   <% end %>
 <% end %>

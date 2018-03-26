@@ -3,10 +3,9 @@ class NotesController < ApplicationController
 
   def index
     @notes = Note.all.order("created_at DESC")
+    @users = User.all.order("username ASC")
     if current_user
       @follows = Follow.where(follower_id: current_user.id)
-    else
-      @users = User.all.order("username ASC")
     end
   end
 
