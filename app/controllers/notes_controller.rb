@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_action :authenticate_user!, except: :index
 
   def index
-    @notes = Note.all
+    @notes = Note.all.order("created_at DESC")
   end
 
   def new

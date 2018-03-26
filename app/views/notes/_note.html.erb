@@ -3,14 +3,24 @@
     <%= note.title %> <br>
     <%= note.body %> <br>
     <%= note.user.email %> <br>
-    <% if Like.find_by(note: note, user: current_user) %>
-      <%= link_to 'Unlike', unlike_note_path(note), remote: true, method: :delete %>
-    <% else %>
-      <%= link_to 'Like', like_note_path(note), remote: true, method: :post %>
-    <% end %>
-    <% if current_user == note.user %>
-      <%= link_to 'Edit', edit_note_path(note) %>
-      <%= link_to 'Delete', note_path(note), method: :delete, data: {confirm:"Are you sure?"} %>
+
+    <% if current_user %>
+      <% if current_user == note.user %>
+        <%= link_to 'Edit', edit_note_path(note) %>
+        <%= link_to 'Delete', note_path(note), method: :delete, data: {confirm:"Are you sure?"} %>
+      <% else %>
+        <% if Like.find_by(note: note, user: current_user) %>
+          <%= link_to 'Unlike Note', unlike_note_path(note), remote: true, method: :delete %>
+        <% else %>
+          <%= link_to 'Like Note', like_note_path(note), remote: true, method: :post if note.user != current_user %>
+        <% end %>
+        <br>
+        <% if Follow.find_by(following_id: note.user, follower_id: current_user) %>
+          <%= link_to 'Unfollow User', unfollow_note_path(note), remote: true, method: :delete %>
+        <% else %>
+          <%= link_to 'Follow User', follow_note_path(note), remote: true, method: :post if note.user != current_user %>
+        <% end %>
+      <% end %>
     <% end %>
     <br><hr><br>
   </div>
