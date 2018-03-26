@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
-  get 'def/create'
 
   root "notes#index"
 
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   
   resources :notes do
     post 'like', on: :member, to: 'likes#create'

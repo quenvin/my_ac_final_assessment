@@ -10,7 +10,7 @@
 
   <body>
     <% if current_user %>
-      Hi, <%= current_user.email %>
+      Hi, <%= current_user.username %>
         <%= link_to('log out', destroy_user_session_path, method: :delete) %> |
         <%= link_to('change password', edit_user_registration_path) %>
       <% else %>
