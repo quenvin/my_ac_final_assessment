@@ -20,25 +20,33 @@
           <%= link_to 'Unfollow', unfollow_user_path(note.user_id), remote: true, method: :delete %>
         <% end %>
       </div>
+    <br><hr><br>
     <% end %>
+    
   <% else %>
     <div>
       <%= note.title %> <br>
       <%= note.body %> <br>
       <%= note.user.username %> <br>
     </div>
+    <br><hr><br>
   <% end %>
-  <br><hr><br>
 <% end %>
 
-<% if @follows == nil || @follows.size == 0 %>
-  <h3>List Of User/s I Followed</h3>
-  <div>No User You Are Following</div>
+<% if current_user %>
+  <% if @follows == nil || @follows.size == 0 %>
+    <h3>List Of User/s I Followed</h3>
+    <div>No User You Are Following</div>
+  <% else %>
+    <% @follows.each do |follow| %>
+      <div>
+        <%= follow.following.username %> <br>
+        <%= link_to 'Unfollow', unfollow_user_path(follow.following.id), remote: true, method: :delete %>
+        <br><hr><br>
+    <% end %>
+  <% end %>
 <% else %>
-  <% @follows.each do |follow| %>
-    <div>
-      <%= follow.following.username %> <br>
-      <%= link_to 'Unfollow', unfollow_user_path(follow.following.id), remote: true, method: :delete %>
-      <br><hr><br>
+  <% @users.each do |user| %>
+    <%= user.username %>
   <% end %>
 <% end %>
