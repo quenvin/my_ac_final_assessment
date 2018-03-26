@@ -1,16 +1,16 @@
 class FollowsController < ApplicationController
       def create
-        note = Note.find(params[:id])
-        Follow.create(following_id: note.user.id, follower: current_user)
+        Follow.create(following_id: params[:id], follower: current_user)
         @notes = Note.all.order("created_at DESC")
+        @follows = Follow.where(follower_id: current_user.id) if current_user        
         render :toggle    
       end
     
       def destroy
-        note = Note.find(params[:id])
-        follow = Follow.find_by(following_id: note.user.id, follower: current_user)
+        follow = Follow.find_by(following_id: params[:id], follower: current_user)
         follow.destroy
         @notes = Note.all.order("created_at DESC")
+        @follows = Follow.where(follower_id: current_user.id) if current_user
         render :toggle
       end
 end

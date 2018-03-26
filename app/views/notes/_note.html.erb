@@ -1,5 +1,6 @@
 <% @notes.each do |note| %>
   <div>
+    <h3>Notes Feed</h3>
     <%= note.title %> <br>
     <%= note.body %> <br>
     <%= note.user.username %> <br>
@@ -16,12 +17,24 @@
         <% end %>
 
         <% if Follow.find_by(following_id: note.user, follower_id: current_user) %>
-          <%= link_to 'Unfollow', unfollow_note_path(note), remote: true, method: :delete %>
+          <%= link_to 'Unfollow', unfollow_user_path(note.user_id), remote: true, method: :delete %>
         <% else %>
-          <%= link_to 'Follow', follow_note_path(note), remote: true, method: :post if note.user != current_user %>
+          <%= link_to 'Follow', follow_user_path(note.user_id), remote: true, method: :post if note.user != current_user %>
         <% end %>
       <% end %>
     <% end %>
     <br><hr><br>
   </div>
+<% end %>
+
+<% if @follows == nil || @follows.size == 0 %>
+  <h3>List Of User/s I Followed</h3>
+  <div>No User You Are Following</div>
+<% else %>
+  <% @follows.each do |follow| %>
+    <div>
+      <%= follow.following.username %> <br>
+      <%= link_to 'Unfollow', unfollow_user_path(follow.following.id), remote: true, method: :delete %>
+      <br><hr><br>
+  <% end %>
 <% end %>

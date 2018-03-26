@@ -3,6 +3,7 @@ class NotesController < ApplicationController
 
   def index
     @notes = Note.all.order("created_at DESC")
+    @follows = Follow.where(follower_id: current_user.id) if current_user
   end
 
   def new
