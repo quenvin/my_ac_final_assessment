@@ -1,0 +1,62 @@
+
+<h3>Notes Feed</h3>
+<% @notes.each do |note| %>
+  <% if current_user %>
+    <% if Follow.find_by(following_id: note.user, follower_id: current_user) %>
+      <div>
+        <%= note.title %> <br>
+        <%= note.body %> <br>
+        <%= note.user.username %> <br>
+
+        <% if current_user == note.user %>
+          <%= link_to 'Edit', edit_note_path(note) %>
+          <%= link_to 'Delete', note_path(note), method: :delete, data: {confirm:"Are you sure?"} %>
+        <% else %>
+          <% if Like.find_by(note: note, user: current_user) %>
+            <%= link_to 'Unlike', unlike_note_path(note), remote: true, method: :delete %>
+          <% else %>
+            <%= link_to 'Like', like_note_path(note), remote: true, method: :post if note.user != current_user %>
+          <% end %>
+          <%= link_to 'Unfollow', unfollow_user_path(note.user_id), remote: true, method: :delete %>
+        <% end %>
+      </div>
+    <br><hr><br>
+    <% end %>
+    
+  <% else %>
+    <div>
+      <%= note.title %> <br>
+      <%= note.body %> <br>
+      <%= note.user.username %> <br>
+    </div>
+    <br><hr><br>
+  <% end %>
+<% end %>
+
+<% if current_user %>
+  <h3>My Follow List</h3>
+  <% if @follows == nil || @follows.size == 0 %>
+    <div>No User You Are Following</div>
+  <% else %>
+    <% @follows.each do |follow| %>
+      <div>
+        <%= follow.following.username %>
+        <%= link_to 'Unfollow', unfollow_user_path(follow.following.id), remote: true, method: :delete %>
+        <br><hr>
+    <% end %>
+  <% end %>
+  <h3>Users To Follow</h3>
+  <% @users.each do |user| %>
+    <% if Follow.find_by(following_id: user, follower_id: current_user) %>
+    <% else %>
+      <%= user.username %>
+      <%= link_to 'Follow', follow_user_path(user), remote: true, method: :post %>
+      <br>
+    <% end%>
+  <% end %>
+<% else %>
+  <h3>Users List</h3>
+  <% @users.each do |user| %>
+    <%= user.username %> <br>
+  <% end %>
+<% end %>

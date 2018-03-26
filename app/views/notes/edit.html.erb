@@ -1,0 +1,9 @@
+<h1>Edit Note</h1>
+
+<%= form_for @note, url: note_path, method: :put do |note| %>
+  <%= note.text_field :title, :maxlength => 140, placeholder: "Type your title here!"  %> <br><br>
+  <%= note.text_area :body, :maxlength => 300, size: "140x10", placeholder: "Type your note here!"%> <br><br>
+  <%= note.submit %>
+<% end %>
+<br>
+<input type="button" value="Go back!" onclick="history.back()">
