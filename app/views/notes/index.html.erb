@@ -1,14 +1,3 @@
 <h1>Notes Index</h1>
 
-<% @notes.each do |note| %>
-  <div>
-    <%= note.title %> <br>
-    <%= note.body %> <br>
-    <%= note.user.email %> <br>
-    <% if current_user == note.user %>
-      <%= link_to 'Edit', edit_note_path(note) %>
-      <%= link_to 'Delete', note_path(note), method: :delete, data: {confirm:"Are you sure?"} %>
-    <% end %>
-    <br><hr><br>
-  </div>
-<% end %>
+<%= render partial: "note" %>
