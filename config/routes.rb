@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'def/create'
+
   root "notes#index"
 
   devise_for :users
